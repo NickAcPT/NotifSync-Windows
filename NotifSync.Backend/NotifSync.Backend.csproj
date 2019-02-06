@@ -71,6 +71,7 @@
     <Compile Include="Server\HandleNotificationModule.cs" />
     <Compile Include="SharedObjects.cs" />
     <Compile Include="TargetedStyle.cs" />
+    <Compile Include="Utils\AndroidColorAdapter.cs" />
     <Compile Include="Utils\BitmapBase91Adapter.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />
   </ItemGroup>

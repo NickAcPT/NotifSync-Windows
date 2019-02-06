@@ -16,7 +16,6 @@ namespace NotifSync.Backend.Server
     {
         public HandleNotificationModule()
         {
-            Post["/handlenotification"] = HandleNotification;
             Post["/v2/handlenotification"] = HandleNotificationVersionTwo;
         }
 
@@ -43,7 +42,7 @@ namespace NotifSync.Backend.Server
 
                 var notification = JsonConvert.DeserializeObject<RemoteNotification>(jsonBody, new JsonSerializerSettings
                 {
-                    Converters = {adapter}
+                    Converters = {adapter, new AndroidColorAdapter()}
                 });
 
                 SharedObjects.Instance.NotificationRouter.Route(notification);
@@ -66,20 +65,6 @@ namespace NotifSync.Backend.Server
             {
                 return null;
             }
-        }
-
-        public object HandleNotification(object arg)
-        {
-            var notif = this.Bind<RemoteNotification>();
-
-            if (notif?.Id != null)
-            {
-                
-
-                return HttpStatusCode.OK;
-            }
-
-            return HttpStatusCode.BadRequest;
         }
     }
 }
