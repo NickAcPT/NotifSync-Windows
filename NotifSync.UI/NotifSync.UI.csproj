@@ -34,6 +34,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Nancy, Version=1.4.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nancy.1.4.5\lib\net40\Nancy.dll</HintPath>
@@ -75,6 +79,7 @@
     <Compile Include="Controls\Impl\BasicSimpleNotificationControl.xaml.cs">
       <DependentUpon>BasicSimpleNotificationControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\NotificationActionButton.cs" />
     <Compile Include="Converters\ColorToWpfColorConverter.cs" />
     <Compile Include="Converters\ImageToImageSourceConverter.cs" />
     <Compile Include="Properties\Annotations1.cs" />
@@ -141,6 +146,9 @@
     <Resource Include="Fonts\Roboto-Regular.ttf" />
     <Resource Include="Fonts\Roboto-Thin.ttf" />
     <Resource Include="Fonts\Roboto-ThinItalic.ttf" />
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

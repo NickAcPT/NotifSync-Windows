@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:windows="clr-namespace:NotifSync.UI.Windows"
         xmlns:ui="clr-namespace:NotifSync.UI"
+        UseLayoutRounding="True"
         xmlns:converters="clr-namespace:NotifSync.UI.Converters"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         AllowsTransparency="True" WindowStyle="None" Background="Transparent"
@@ -26,7 +27,7 @@
         </Border.Effect>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="5" />
             </Grid.ColumnDefinitions>
@@ -63,7 +64,7 @@
                         </Grid.Style>
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="25" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
@@ -71,10 +72,10 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <Image Grid.Column="0"
+                        <Image Grid.Column="0" Width="15"
                                Source="{Binding Notification.SmallIcon, Converter={StaticResource ImageSourceConverter}}"
-                               Margin="0 5 5 5" Stretch="UniformToFill" Name="AppIcon" />
-                        <Rectangle Grid.Column="0" Margin="0 5 5 5">
+                               Margin="5" Stretch="UniformToFill" Name="AppIcon" />
+                        <Rectangle Grid.Column="0" Margin="5" Width="15">
                             <Rectangle.Fill>
                                 <SolidColorBrush
                                     Color="{Binding Notification.Color, Converter={StaticResource ColorToBrushConverter}}" />
@@ -112,14 +113,11 @@
                     </Grid>
                 </Grid>
 
-                <Grid Grid.Row="2" Name="ContentGrid" Background="#02FFFFFF">
+                <Grid Grid.Row="2" Name="ContentGrid" Background="#02FFFFFF" Margin="5 0 0 0">
                     <ContentControl Name="ContentControl" />
                 </Grid>
             </Grid>
-            <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Height="18" Visibility="{Binding Notification.HasActions, Converter={StaticResource BoolToVis}}">
-                <Button Style="{StaticResource NotificationButton}" Content="REEEE" Margin="5 0"/>
-                <Button Style="{StaticResource NotificationButton}" Content="REEEE" Margin="5 0"/>
-            </StackPanel>
+            <StackPanel Name="ActionPanel" Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Height="20" Visibility="{Binding Notification.HasActions, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </Border>
 </Window>
