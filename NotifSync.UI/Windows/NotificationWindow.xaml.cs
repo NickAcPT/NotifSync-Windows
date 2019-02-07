@@ -34,23 +34,40 @@ namespace NotifSync.UI.Windows
         public void SetNotificationContent(BaseNotificationContentControl control)
         {
             ContentControl.Content = control;
+            var buttons = Notification?.Actions?.Select(c => new NotificationActionButton(c)) ?? Enumerable.Empty<NotificationActionButton>();
+            var actionButtons = buttons as NotificationActionButton[] ?? buttons.ToArray();
+            foreach (var button in actionButtons)
+            {
+                ActionPanel.Children.Add(button);
+
+            }
+            
             Loaded += (sender, args) =>
             {
-                var size = new Size(control.Width, control.Height);
-                var oldContentWindowSize = new Size(ContentGrid.ActualWidth, ContentGrid.ActualHeight);
-
-                var (width, height) = (Width:
-                    size.Width - oldContentWindowSize.Width,
-                    Height: size.Height - oldContentWindowSize.Height);
-
-                Width += width;
-                Height += height;
+                foreach (var button in actionButtons)
+                {
+                    button.Width = button.ActualWidth + 10;
+                }
+                AdjustWindowToContentControl(control);
 
                 var desktopWorkingArea = SystemParameters.WorkArea;
-                Left = desktopWorkingArea.Right - Width + OuterBorder.Margin.Right;
-                Top = desktopWorkingArea.Bottom - Height + OuterBorder.Margin.Bottom;
+                Left = desktopWorkingArea.Right - Width/* + OuterBorder.Margin.Right*/;
+                Top = desktopWorkingArea.Bottom - Height/* + OuterBorder.Margin.Bottom*/;
 
             };
+        }
+
+        private void AdjustWindowToContentControl([Annotations.NotNull] FrameworkElement control)
+        {
+            var size = new Size(control.Width, control.Height);
+            var oldContentWindowSize = new Size(ContentGrid.ActualWidth, ContentGrid.ActualHeight);
+
+            var (width, height) = (Width:
+                size.Width - oldContentWindowSize.Width,
+                Height: size.Height - oldContentWindowSize.Height);
+
+            Width += width;
+            Height += height;
         }
 
         public RemoteNotification Notification
