@@ -14,7 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using NotifSync.Backend.Model;
-using NotifSync.UI.Annotations;
+using NotifSync.UI.Controls;
+using NotifSync.UI.Properties;
 
 namespace NotifSync.UI.Windows
 {
@@ -28,6 +29,28 @@ namespace NotifSync.UI.Windows
         public NotificationWindow(RemoteNotification notification)
         {
             Notification = notification;
+        }
+
+        public void SetNotificationContent(BaseNotificationContentControl control)
+        {
+            ContentControl.Content = control;
+            Loaded += (sender, args) =>
+            {
+                var size = new Size(control.Width, control.Height);
+                var oldContentWindowSize = new Size(ContentGrid.ActualWidth, ContentGrid.ActualHeight);
+
+                var (width, height) = (Width:
+                    size.Width - oldContentWindowSize.Width,
+                    Height: size.Height - oldContentWindowSize.Height);
+
+                Width += width;
+                Height += height;
+
+                var desktopWorkingArea = SystemParameters.WorkArea;
+                Left = desktopWorkingArea.Right - Width + OuterBorder.Margin.Right;
+                Top = desktopWorkingArea.Bottom - Height + OuterBorder.Margin.Bottom;
+
+            };
         }
 
         public RemoteNotification Notification

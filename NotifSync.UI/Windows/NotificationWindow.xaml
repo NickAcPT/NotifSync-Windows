@@ -5,78 +5,121 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:windows="clr-namespace:NotifSync.UI.Windows"
         xmlns:ui="clr-namespace:NotifSync.UI"
+        xmlns:converters="clr-namespace:NotifSync.UI.Converters"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         AllowsTransparency="True" WindowStyle="None" Background="Transparent"
         mc:Ignorable="d"
-        Title="NotificationWindow" Height="120" Width="370">
+        Title="NotificationWindow" Height="170.333" Width="370">
     <Window.Resources>
-        <ui:ImageToImageSourceConverter x:Key="ImageSourceConverter" />
-        <ui:ColorToWpfColorConverter x:Key="ColorToBrushConverter" />
+        <converters:ImageToImageSourceConverter x:Key="ImageSourceConverter" />
+        <converters:ColorToWpfColorConverter x:Key="ColorToBrushConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
-    <Border Margin="5 5 5 7" Background="White" BorderBrush="#B4B4B4" BorderThickness=".75">
+    <Window.Style>
+        <Style TargetType="Window">
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
+    </Window.Style>
+    <Border Margin="5 5 5 7" Background="White" BorderBrush="#B4B4B4" BorderThickness=".75" Name="OuterBorder">
         <Border.Effect>
             <DropShadowEffect BlurRadius="7" ShadowDepth="2" Direction="-90" Opacity="0.25" />
         </Border.Effect>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="10" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="5" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="5" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="5" />
             </Grid.RowDefinitions>
-            <Button Grid.Column="1" Grid.Row="1" VerticalAlignment="Top"
-                    Content="{StaticResource CloseGlyph}" Width="25" Height="25"
-                    Style="{StaticResource NotificationCloseButton}"
-                    HorizontalAlignment="Right"
-                    Click="CloseButton_OnClick" />
-            <Grid Grid.Column="1" Height="24" Margin="0,1,25,0" Grid.Row="1" VerticalAlignment="Top"
-                  Name="MoveRect" MouseDown="MoveRect_OnMouseDown">
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="#C2C2C2" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
+            <Grid Row="1" Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+                <Grid Row="0">
+                    <Button VerticalAlignment="Top"
+                            Content="{StaticResource CloseGlyph}" Width="25" Height="25"
+                            Style="{StaticResource NotificationCloseButton}"
+                            HorizontalAlignment="Right"
+                            Click="CloseButton_OnClick" />
+                    <Grid Height="24" Margin="0,1,25,0" VerticalAlignment="Top"
+                          Name="MoveRect" MouseDown="MoveRect_OnMouseDown">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#C2C2C2" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
 
-                <Image Grid.Column="0"
-                       Source="{Binding Notification.SmallIcon, Converter={StaticResource ImageSourceConverter}}"
-                       Margin="5" Stretch="UniformToFill" Name="AppIcon" />
-                <Rectangle Grid.Column="0" Margin="5">
-                    <Rectangle.Fill>
-                        <SolidColorBrush
-                            Color="{Binding Notification.Color, Converter={StaticResource ColorToBrushConverter}}" />
-                    </Rectangle.Fill>
-                    <Rectangle.OpacityMask>
-                        <ImageBrush
-                            ImageSource="{Binding Notification.SmallIcon, Converter={StaticResource ImageSourceConverter}}"
-                            Stretch="UniformToFill" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="1" Text="{Binding Path=Notification.AppName, FallbackValue='App Name'}"
-                           Foreground="#737373"
-                           VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 3 0"/>
-                <TextBlock Grid.Column="2" TextAlignment="Center" Text="&#5867;" Margin="3" VerticalAlignment="Center"
-                           HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="3" Text="now" Margin="3 0 5 0" VerticalAlignment="Center"
-                           HorizontalAlignment="Left" />
+                        <Image Grid.Column="0"
+                               Source="{Binding Notification.SmallIcon, Converter={StaticResource ImageSourceConverter}}"
+                               Margin="0 5 5 5" Stretch="UniformToFill" Name="AppIcon" />
+                        <Rectangle Grid.Column="0" Margin="0 5 5 5">
+                            <Rectangle.Fill>
+                                <SolidColorBrush
+                                    Color="{Binding Notification.Color, Converter={StaticResource ColorToBrushConverter}}" />
+                            </Rectangle.Fill>
+                            <Rectangle.OpacityMask>
+                                <ImageBrush
+                                    ImageSource="{Binding Notification.SmallIcon, Converter={StaticResource ImageSourceConverter}}"
+                                    Stretch="UniformToFill" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+
+                        <TextBlock Grid.Column="1" Text="{Binding Path=Notification.AppName, FallbackValue='App Name'}"
+                                   Foreground="#616161"
+                                   VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0 0 3 0" />
+
+                        <!--Start SubText-->
+                        <TextBlock Grid.Column="2"
+                                   Visibility="{Binding Notification.HasSubText, Converter={StaticResource BoolToVis}}"
+                                   TextAlignment="Center" Text="&#5867;" Margin="3"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="3" Foreground="#616161"
+                                   Text="{Binding Notification.SubText, FallbackValue='Sub text'}" Margin="3 0 5 0"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   Visibility="{Binding Notification.HasSubText, Converter={StaticResource BoolToVis}}" />
+                        <!--End Subtext-->
+
+                        <TextBlock Grid.Column="4" TextAlignment="Center" Text="&#5867;" Margin="3"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Grid.Column="5" Text="now"
+                                   Margin="3 0 5 0" VerticalAlignment="Center"
+                                   HorizontalAlignment="Left" />
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="2" Name="ContentGrid" Background="#02FFFFFF">
+                    <ContentControl Name="ContentControl" />
+                </Grid>
             </Grid>
-
+            <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Height="18" Visibility="{Binding Notification.HasActions, Converter={StaticResource BoolToVis}}">
+                <Button Style="{StaticResource NotificationButton}" Content="REEEE" Margin="5 0"/>
+                <Button Style="{StaticResource NotificationButton}" Content="REEEE" Margin="5 0"/>
+            </StackPanel>
         </Grid>
     </Border>
 </Window>

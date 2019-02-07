@@ -57,20 +57,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="INotificationHandler.cs" />
+    <Compile Include="INotificationRouter.cs" />
     <Compile Include="Model\RemoteAction.cs" />
     <Compile Include="Model\RemoteInput.cs" />
     <Compile Include="Model\RemoteMessage.cs" />
     <Compile Include="Model\RemoteMessageInfo.cs" />
     <Compile Include="Model\RemoteNotification.cs" />
     <Compile Include="Model\RemotePerson.cs" />
-    <Compile Include="NotificationRouter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomClass.cs" />
     <Compile Include="Server\Bootstrapper.cs" />
     <Compile Include="Server\HandleNotificationModule.cs" />
     <Compile Include="SharedObjects.cs" />
-    <Compile Include="TargetedStyle.cs" />
     <Compile Include="Utils\AndroidColorAdapter.cs" />
     <Compile Include="Utils\BitmapBase91Adapter.cs" />
     <Compile Include="Utils\ExtensionMethods.cs" />

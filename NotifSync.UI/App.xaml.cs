@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Nancy.Hosting.Self;
 using NotifSync.Backend;
+using NotifSync.UI.Router;
 
 namespace NotifSync.UI
 {
@@ -19,7 +20,7 @@ namespace NotifSync.UI
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            SharedObjects.Instance.RandomMethod();
+            SharedObjects.Instance.NotificationRouter = new NotificationRouter();
             RandomClass.Hello();
 
             var hostConfigs = new HostConfiguration

@@ -5,6 +5,10 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
+            <FontFamily x:Key="Roboto">/Fonts/Roboto-Regular.ttf#Roboto</FontFamily>
+            <FontFamily x:Key="RobotoMedium">/Fonts/Roboto-Medium.ttf#Roboto Medium</FontFamily>
+            <FontFamily x:Key="RobotoLight">/Fonts/Roboto-Light.ttf#Roboto Medium</FontFamily>
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="NotificationStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>

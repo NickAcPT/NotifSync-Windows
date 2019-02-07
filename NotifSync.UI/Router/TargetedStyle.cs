@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NotifSync.UI.Handlers
+namespace NotifSync.UI.Router
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     sealed class TargetedStyleAttribute : Attribute

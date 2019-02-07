@@ -1,35 +1,19 @@
 ﻿using System.Threading;
 using System.Windows;
+using NotifSync.Backend;
 using NotifSync.Backend.Model;
+using NotifSync.UI.Controls;
+using NotifSync.UI.Controls.Impl;
+using NotifSync.UI.Router;
 using NotifSync.UI.Windows;
 
 namespace NotifSync.UI.Handlers.Impl
 {
     public class DefaultNotificationHandler : INotificationHandler
     {
-        public void HandleNotification(RemoteNotification notification)
+        public BaseNotificationContentControl HandleNotification(RemoteNotification notification, ref NotificationWindow window)
         {
-            Application.Current.Dispatcher.Invoke(() => StartWindow(notification));
-        }
-
-        private void StartWindow(RemoteNotification notification)
-        {
-            var window = new NotificationWindow
-            {
-                Notification = notification,
-                WindowStartupLocation = WindowStartupLocation.CenterOwner
-            };
-
-            void Window_Loaded(object sender, RoutedEventArgs e)
-            {
-                var desktopWorkingArea = SystemParameters.WorkArea;
-                window.Left = desktopWorkingArea.Right - window.Width;
-                window.Top = desktopWorkingArea.Bottom - window.Height;
-            }
-
-            window.Loaded += Window_Loaded;
-
-            window.Show();
+            return new BasicSimpleNotificationControl();
         }
     }
 }

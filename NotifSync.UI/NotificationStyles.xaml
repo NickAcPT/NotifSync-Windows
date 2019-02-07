@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:NotifSync.UI">
 
-    <Path x:Key="CloseGlyph" Margin="-11"
+    <Path x:Key="CloseGlyph" x:Shared="false" Margin="-11"
           Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
           Fill="#646464" RenderTransformOrigin="0.5, 0.5">
         <Path.RenderTransform>
@@ -10,6 +10,30 @@
         </Path.RenderTransform>
     </Path>
 
+    <Style x:Key="NotificationButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border CornerRadius="2" FocusVisualStyle="{x:Null}" x:Name="CloseButtonGrid"
+                            Background="{TemplateBinding Background}">
+                        <ContentPresenter FocusVisualStyle="{x:Null}" Content="{TemplateBinding Content}"
+                                          VerticalAlignment="Center"
+                                          KeyboardNavigation.IsTabStop="False"
+                                          HorizontalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#E7E7E7" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#BFBFBF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="{x:Type Button}" x:Key="NotificationCloseButton">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Template">
@@ -20,8 +44,7 @@
                         <ContentPresenter FocusVisualStyle="{x:Null}" Content="{TemplateBinding Content}"
                                           VerticalAlignment="Center"
                                           KeyboardNavigation.IsTabStop="False"
-                                          HorizontalAlignment="Center"
-                                          />
+                                          HorizontalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">

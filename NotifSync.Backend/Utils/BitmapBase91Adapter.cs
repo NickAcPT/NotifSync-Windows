@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json;
-using NotifSync.Utils;
 
 namespace NotifSync.Backend.Utils
 {

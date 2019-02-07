@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace NotifSync.UI
+namespace NotifSync.UI.Converters
 {
     public class ColorToWpfColorConverter : IValueConverter
     {

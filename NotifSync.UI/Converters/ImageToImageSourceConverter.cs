@@ -5,7 +5,7 @@ using System.IO;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
-namespace NotifSync.UI
+namespace NotifSync.UI.Converters
 {
     public class ImageToImageSourceConverter : IValueConverter
     {

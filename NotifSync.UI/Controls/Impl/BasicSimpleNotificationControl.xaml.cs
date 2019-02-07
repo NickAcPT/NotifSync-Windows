@@ -12,28 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using NotifSync.UI.Windows;
 
-namespace NotifSync.UI
+namespace NotifSync.UI.Controls.Impl
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for BasicSimpleNotificationControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class BasicSimpleNotificationControl : BaseNotificationContentControl
     {
-        public MainWindow()
+        public BasicSimpleNotificationControl()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-var window = new NotificationWindow
-{
-    WindowStartupLocation = WindowStartupLocation.CenterOwner, Owner = this
-};
-
-window.Show();
         }
     }
 }
