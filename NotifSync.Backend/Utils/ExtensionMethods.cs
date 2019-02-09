@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.CompilerServices;
+using NotifSync.Backend.Model;
+using NotifSync.Backend.Server;
 
 namespace NotifSync.Backend.Utils
 {
@@ -35,6 +38,11 @@ namespace NotifSync.Backend.Utils
                 imageIn.Save(ms, imageIn.RawFormat);
                 return ms.ToArray();
             }
+        }
+
+        public static INotificationManager GetManager(this RemoteNotification notif)
+        {
+            return SharedObjects.Instance.GetManagerForIp(notif.SenderAddress);
         }
 
     }

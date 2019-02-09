@@ -59,9 +59,10 @@ namespace NotifSync.UI.Router
                 var alreadyExists = NotificationWindows.ContainsKey(keyTuple);
                 var win = alreadyExists ? NotificationWindows[keyTuple] : new NotificationWindow
                 {
-                    Notification = notif,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner
                 };
+                win.Notification = notif;
+                notif.ReplyHandler = win;
 
                 if (!alreadyExists)
                 {
@@ -73,8 +74,15 @@ namespace NotifSync.UI.Router
 
                 if (alreadyExists) control.Notification?.Dispose();
                 control.Notification = notif;
-                win.SetNotificationContent(control);
-                win.Closing += (sender, args) => NotificationWindows.Remove(keyTuple);
+                win.SetNotificationContent(control, alreadyExists);
+                if (!alreadyExists)
+                {
+                    win.Closing += (sender, args) => NotificationWindows.Remove(keyTuple);
+                }
+                else
+                {
+                    win.AdjustWindowToContentControl(control);
+                }
 
                 win.Show();
             });
@@ -85,7 +93,6 @@ namespace NotifSync.UI.Router
             var valueTuple = (id, appPackage);
             if (!NotificationWindows.ContainsKey(valueTuple))
                 return;
-
 
             Application.Current.Dispatcher.Invoke(() =>
             {

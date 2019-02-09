@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Odbc;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Nancy;
-using Nancy.ModelBinding;
 using Newtonsoft.Json;
 using NotifSync.Backend.Model;
 using NotifSync.Backend.Utils;
@@ -40,18 +38,31 @@ namespace NotifSync.Backend.Server
             {
                 var jsonBody = GetJsonBody();
 
-                var adapter = new BitmapBase91Adapter(Request.Files.Select(BitmapFromHttpFile).Where(c => c.HasValue).Select(c => (c.Value.Item1, c.Value.Item2)).ToDictionary(tuple => tuple.Item1, tuple1 => tuple1.Item2));
+                var adapter = new BitmapBase91Adapter(Request.Files.Select(BitmapFromHttpFile).Where(c => c.HasValue)
+                    .Select(c => (c.Value.Item1, c.Value.Item2))
+                    .ToDictionary(tuple => tuple.Item1, tuple1 => tuple1.Item2));
 
-                var notification = JsonConvert.DeserializeObject<RemoteNotification>(jsonBody, new JsonSerializerSettings
+                var notification = JsonConvert.DeserializeObject<RemoteNotification>(jsonBody,
+                    new JsonSerializerSettings
+                    {
+                        Converters = {adapter, new AndroidColorAdapter()}
+                    });
+
+                for (var index = 0; index < notification?.Actions?.Length; index++)
                 {
-                    Converters = {adapter, new AndroidColorAdapter()}
-                });
+                    var action = notification.Actions[index];
+                    action.Parent = notification;
+                    action.Index = index;
+                }
+
+                if (notification == null) return HttpStatusCode.OK;
+                notification.SenderAddress = Request.UserHostAddress;
 
                 SharedObjects.Instance.NotificationRouter.Route(notification);
 
                 return HttpStatusCode.OK;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
                 return HttpStatusCode.InternalServerError;
             }
@@ -60,20 +71,20 @@ namespace NotifSync.Backend.Server
         private string GetJsonBody()
         {
             var contentTypeRegex = new Regex("^multipart/form-data;\\s*boundary=(.*)$", RegexOptions.IgnoreCase);
-            System.IO.Stream bodyStream = null;
-            if (contentTypeRegex.IsMatch(this.Request.Headers.ContentType))
+            Stream bodyStream = null;
+            if (contentTypeRegex.IsMatch(Request.Headers.ContentType))
             {
-                var boundary = contentTypeRegex.Match(this.Request.Headers.ContentType).Groups[1].Value;
-                var multipart = new HttpMultipart(this.Request.Body, boundary);
+                var boundary = contentTypeRegex.Match(Request.Headers.ContentType).Groups[1].Value;
+                var multipart = new HttpMultipart(Request.Body, boundary);
                 bodyStream = multipart.GetBoundaries().First(b => b.Name.Equals("json")).Value;
             }
             else
             {
                 // Regular model binding goes here.
-                bodyStream = this.Request.Body;
+                bodyStream = Request.Body;
             }
 
-            var jsonBody = new System.IO.StreamReader(bodyStream).ReadToEnd();
+            var jsonBody = new StreamReader(bodyStream).ReadToEnd();
             return jsonBody;
         }
 

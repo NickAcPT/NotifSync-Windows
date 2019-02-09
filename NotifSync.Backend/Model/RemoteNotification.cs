@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using NotifSync.Backend.Server;
 using NotifSync.Backend.Utils;
+using Refit;
 
 namespace NotifSync.Backend.Model
 {
@@ -21,6 +23,7 @@ namespace NotifSync.Backend.Model
         public RemoteMessageInfo MessageInfo { get; set; }
         public bool Ongoing { get; set; }
         public bool Clearable { get; set; }
+        public string SenderAddress { get; set; }
 
         /* Helper Values */
         public string Title => Extras?.GetCastedValueOrDefault("android.title", "") ?? "";
@@ -30,6 +33,25 @@ namespace NotifSync.Backend.Model
 
         public bool HasActions => Actions?.Length > 0;
         /* Helper Values */
+
+        public IReplyHandler ReplyHandler { get; set; }
+
+        public void Close()
+        {
+            if (!Ongoing && Clearable) InternalClose();
+        }
+
+        protected void InternalClose()
+        {
+            try
+            {
+                this.GetManager().DismissNotification(Id ?? 0, AppPackage);
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+        }
 
         public void Dispose()
         {

@@ -21,7 +21,6 @@ namespace NotifSync.UI
         protected override void OnStartup(StartupEventArgs e)
         {
             SharedObjects.Instance.NotificationRouter = new NotificationRouter();
-            RandomClass.Hello();
 
             var hostConfigs = new HostConfiguration
             {
