@@ -28,12 +28,12 @@ namespace NotifSync.UI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-var window = new NotificationWindow
-{
-    WindowStartupLocation = WindowStartupLocation.CenterOwner, Owner = this
-};
+            var window = new NotificationWindow
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterOwner, Owner = this
+            };
 
-window.Show();
+            window.Show();
         }
     }
 }

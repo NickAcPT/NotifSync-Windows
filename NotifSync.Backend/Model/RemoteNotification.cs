@@ -24,6 +24,7 @@ namespace NotifSync.Backend.Model
         public bool Ongoing { get; set; }
         public bool Clearable { get; set; }
         public string SenderAddress { get; set; }
+        public RemoteDevice OriginDevice { get; set; }
 
         /* Helper Values */
         public string Title => Extras?.GetCastedValueOrDefault("android.title", "") ?? "";

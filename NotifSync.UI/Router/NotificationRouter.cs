@@ -59,7 +59,7 @@ namespace NotifSync.UI.Router
                 var alreadyExists = NotificationWindows.ContainsKey(keyTuple);
                 var win = alreadyExists ? NotificationWindows[keyTuple] : new NotificationWindow
                 {
-                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    WindowStartupLocation = WindowStartupLocation.Manual
                 };
                 win.Notification = notif;
                 notif.ReplyHandler = win;

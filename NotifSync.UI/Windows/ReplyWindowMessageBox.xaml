@@ -42,7 +42,7 @@
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="1" Style="{StaticResource NotificationButton}" Click="ReplyButton_Click">
+                <Button IsDefault="True" Grid.Column="1" Style="{StaticResource NotificationButton}" Click="ReplyButton_Click">
                     <Viewbox Width="24" Height="24">
                         <Canvas Width="24" Height="24">
                             <Path Data="M2,21L23,12L2,3V10L17,12L2,14V21Z" Fill="#3F3F3F" />
@@ -110,7 +110,8 @@
                 </TextBox>
 
             </Grid>
-            <Button Content="CancelButton" HorizontalAlignment="Left" Margin="-6,-30,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2" Click="ExitButton_OnClick" />
+            <Button Content="CancelButton" HorizontalAlignment="Left" Margin="-6,-30,0,0" VerticalAlignment="Top" Width="75"
+                    Grid.Row="0" IsCancel="True" Grid.ColumnSpan="2" Click="ExitButton_OnClick" />
 
         </Grid>
     </Border>

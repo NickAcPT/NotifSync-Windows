@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Nancy;
 using Newtonsoft.Json;
 using NotifSync.Backend.Model;
@@ -10,16 +11,17 @@ using NotifSync.Backend.Utils;
 
 namespace NotifSync.Backend.Server
 {
-    public class HandleNotificationModule : NancyModule
+    public sealed class HandleNotificationModule : NancyModule
     {
         public HandleNotificationModule()
         {
-            Post["/handlenotification"] = HandleNotification;
-            Post["/removenotification/{id:int}/{appPackage}"] = RemoveNotification;
+            Get("/handlenotification", HandleNotification);
+            Get("/removenotification/{id:int}/{appPackage}", RemoveNotification);
         }
 
-        private object RemoveNotification(dynamic args)
+        private async Task<HttpStatusCode> RemoveNotification(dynamic args)
         {
+            await Task.Yield();
             try
             {
                 SharedObjects.Instance.NotificationRouter.Remove(args.id, args.appPackage);
@@ -32,14 +34,15 @@ namespace NotifSync.Backend.Server
             }
         }
 
-        private object HandleNotification(object arg)
+        private async Task<HttpStatusCode> HandleNotification(dynamic o)
         {
+            await Task.Yield();
             try
             {
                 var jsonBody = GetJsonBody();
 
                 var adapter = new BitmapBase91Adapter(Request.Files.Select(BitmapFromHttpFile).Where(c => c.HasValue)
-                    .Select(c => (c.Value.Item1, c.Value.Item2))
+                    .Select(c => c.Value)
                     .ToDictionary(tuple => tuple.Item1, tuple1 => tuple1.Item2));
 
                 var notification = JsonConvert.DeserializeObject<RemoteNotification>(jsonBody,

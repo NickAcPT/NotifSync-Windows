@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -32,9 +33,12 @@ namespace NotifSync.UI.Windows
                           Enumerable.Empty<NotificationActionButton>();
             var actionButtons = buttons as NotificationActionButton[] ?? buttons.ToArray();
             ActionPanel.Children.Clear();
-            foreach (var button in actionButtons)
+            using (var d = Dispatcher.DisableProcessing())
             {
-                ActionPanel.Children.Add(button);
+                foreach (var button in actionButtons)
+                {
+                    ActionPanel.Children.Add(button);
+                }
             }
 
             if (!alreadyLoaded)
@@ -45,7 +49,11 @@ namespace NotifSync.UI.Windows
             }
             else
             {
-                AdjustWindowToContentControl(control);
+                using (var d = Dispatcher.DisableProcessing())
+                {
+                    AdjustWindowToContentControl(control);
+                    PrepareButtons(actionButtons);
+                }
             }
         }
 
@@ -74,23 +82,39 @@ namespace NotifSync.UI.Windows
         {
             return (sender, args) =>
             {
-                foreach (var button in actionButtons)
+                using (Dispatcher.DisableProcessing())
                 {
-                    button.Width = button.ActualWidth + 10;
+                    Hide();
+                    PrepareButtons(actionButtons);
+
+                    AdjustWindowToContentControl(control);
+                    
+                    PrepareWindowLocation();
+                    Show();
                 }
-
-                AdjustWindowToContentControl(control);
-
-                var desktopWorkingArea = SystemParameters.WorkArea;
-                Left = desktopWorkingArea.Right - Width /* + OuterBorder.Margin.Right*/;
-                Top = desktopWorkingArea.Bottom - Height /* + OuterBorder.Margin.Bottom*/;
             };
+        }
+
+        private void PrepareWindowLocation()
+        {
+            var desktopWorkingArea = SystemParameters.WorkArea;
+            Left = desktopWorkingArea.Right - Width + OuterBorder.Margin.Right;
+            Top = desktopWorkingArea.Bottom - Height + OuterBorder.Margin.Bottom;
+        }
+
+        private void PrepareButtons(IEnumerable<NotificationActionButton> actionButtons)
+        {
+            foreach (var button in actionButtons)
+            {
+                button.Padding = new Thickness(5, 0, 5, 0);
+            }
         }
 
         public void AdjustWindowToContentControl([Annotations.NotNull] FrameworkElement control)
         {
             var size = new Size(control.Width, control.Height);
-            var oldContentWindowSize = new Size(ContentGrid.ActualWidth + 0, ContentGrid.ActualHeight + ActionPanel.ActualHeight);
+            var oldContentWindowSize = new Size(ContentGrid.ActualWidth + 0,
+                ContentGrid.ActualHeight + ActionPanel.ActualHeight);
 
             var (width, height) = (Width:
                 size.Width - oldContentWindowSize.Width,
